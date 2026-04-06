@@ -1,23 +1,21 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 
-// Middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+const PORT = 3000;
 
-// Ruta raíz
 app.get('/', (req, res) => {
-  res.send('Hola mundo!');
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Middleware básico para manejo de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: '¡Algo salió mal!' });
+app.get('/acerca', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'acerca.html'));
 });
 
-// Iniciar servidor
-const PORT = process.env.PORT || 3000;
+app.get('/contacto', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'contacto.html'));
+});
+
 app.listen(PORT, () => {
-  console.log(`Servidor ejecutándose en el puerto ${PORT}`);
-}); 
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
