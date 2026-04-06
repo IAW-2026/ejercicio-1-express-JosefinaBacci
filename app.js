@@ -5,6 +5,10 @@ app.use(express.urlencoded({ extended: true }));
 
 const PORT = 3000;
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/public/index.html');
+});
+
 app.post('/contacto', (req, res) => {
   const { nombre, mensaje } = req.body;
 
@@ -12,7 +16,7 @@ app.post('/contacto', (req, res) => {
     <h1>Mensaje recibido</h1>
     <p><strong>Nombre:</strong> ${nombre}</p>
     <p><strong>Mensaje:</strong> ${mensaje}</p>
-    <a href="/index.html">Volver</a>
+    <a href="/">Volver</a>
   `);
 });
 
