@@ -1,23 +1,27 @@
 const express = require('express');
 const app = express();
 
-// Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
-// Ruta raíz
-app.get('/', (req, res) => {
-  res.send('Hola mundo!');
+const frases = [
+  "¡Ay caramba!",
+  "Marge, ¿dónde está esa cosa... esa cosa que... ya sabes, la que sirve para...?",
+  "¿Cuándo voy a aprender? La solución a todos los problemas de la vida no está en el fondo de una botella. ¡Está en la televisión!",
+  "¡Perfectirijillo!",
+  "¡D'oh!",
+  "¡Excelente!"
+];
+
+app.get('/frase', (req, res) => {
+  const indice = Math.floor(Math.random() * frases.length);
+  const fraseAleatoria = frases[indice];
+
+  res.json({ frase: fraseAleatoria });
 });
 
-// Middleware básico para manejo de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: '¡Algo salió mal!' });
-});
-
-// Iniciar servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor ejecutándose en el puerto ${PORT}`);
+  console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
 }); 
