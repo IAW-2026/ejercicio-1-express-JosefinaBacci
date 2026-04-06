@@ -7,14 +7,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-  res.send(`
-    <h1>Bienvenido a la aplicación de mensajes</h1>
-    <form action="/mensajes" method="POST">
-      <input type="text" name="mensaje" placeholder="Escribe tu mensaje" required>
-      <button type="submit">Enviar</button>
-    </form>
-    <a href="/mensajes">Ver mensajes</a>
-  `);
+  res.sendFile(__dirname + '/public/index.html');
 });
 
 app.post('/mensajes', (req, res) => {
