@@ -1,23 +1,39 @@
 const express = require('express');
 const app = express();
+let mensajes = [];
 
-// Middleware
 app.use(express.json());
+app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 
-// Ruta raíz
 app.get('/', (req, res) => {
-  res.send('Hola mundo!');
+  res.send(`
+    <h1>Bienvenido a la aplicación de mensajes</h1>
+    <form action="/mensajes" method="POST">
+      <input type="text" name="mensaje" placeholder="Escribe tu mensaje" required>
+      <button type="submit">Enviar</button>
+    </form>
+    <a href="/mensajes">Ver mensajes</a>
+  `);
 });
 
-// Middleware básico para manejo de errores
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({ error: '¡Algo salió mal!' });
+app.post('/mensajes', (req, res) => {
+  const { mensaje } = req.body;
+  mensajes.push(mensaje);
+  res.redirect('/mensajes');
 });
 
-// Iniciar servidor
+app.get('/mensajes', (req, res) => {
+  let lista = mensajes.map(m => `<li>${m}</li>`).join('');
+
+  res.send(`
+    <h1>Mensajes</h1>
+    <ul>${lista}</ul>
+    <a href="/">Volver</a>
+  `);
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`Servidor ejecutándose en el puerto ${PORT}`);
+  console.log(`Servidor ejecutándose en http://localhost:${PORT}`);
 }); 
